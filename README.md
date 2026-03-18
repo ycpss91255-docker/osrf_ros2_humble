@@ -109,6 +109,51 @@ Auto-generated on first `./build.sh` or `./run.sh`, or refer to `.env.example` t
 | `IMAGE_NAME` | Image name | `osrf_ros2_humble` |
 | `WS_PATH` | Workspace mount path | `/home/user/colcon_ws` |
 
+### Auto-detection Details
+
+`setup.sh` automatically detects system parameters and generates `.env`. The two most complex detections are documented below.
+
+<details>
+<summary>Click to expand detection logic</summary>
+
+#### IMAGE_NAME Inference
+
+Scans the repo directory path to derive the image name:
+
+| Priority | Rule | Example Path | Result |
+|:--------:|------|-------------|--------|
+| 1 | Scan path (right→left) for `*_ws` → use prefix | `/home/user/ros2_humble_ws/docker_osrf_ros2_humble` | `ros2_humble` |
+| 2 | Last directory matches `docker_*` → strip prefix | `/home/user/docker_osrf_ros2_humble` | `osrf_ros2_humble` |
+| 3 | Read `IMAGE_NAME` from `.env.example` | — | value in `.env.example` |
+| 4 | Fallback | — | `unknown` |
+
+#### WS_PATH Workspace Detection
+
+Three-strategy search to locate the workspace mount path:
+
+| Priority | Strategy | Condition | Result |
+|:--------:|----------|-----------|--------|
+| 1 | Sibling scan | Current dir is `docker_*` and sibling `*_ws` exists | Sibling `*_ws` absolute path |
+| 2 | Path traversal | Walk path upward, find first `*_ws` component | That `*_ws` directory |
+| 3 | Fallback | None of the above | Parent directory of repo |
+
+**Example** (strategy 1):
+```
+/home/user/
+├── docker_osrf_ros2_humble/ ← repo (current dir)
+└── osrf_ros2_humble_ws/     ← detected as WS_PATH
+```
+
+**Example** (strategy 2):
+```
+/home/user/colcon_ws/src/docker_osrf_ros2_humble/
+                     ↑ found *_ws while traversing upward
+```
+
+> If `.env` already exists and `WS_PATH` points to a valid directory, detection is skipped and the existing value is preserved.
+
+</details>
+
 ### Language
 
 `setup.sh` displays messages in English by default. Use `--lang zh` for Chinese when running `build.sh`:
@@ -165,11 +210,64 @@ graph TD
 
 ### Smoke Test Coverage
 
-Located in `smoke_test/ros_env.bats`:
+Located in `smoke_test/ros_env.bats`, executed automatically during `docker build --target test` — **33 tests** total.
 
-- ROS environment: `ROS_DISTRO`, `setup.bash` sourceable, `ros2` CLI, `rviz2` available
-- Dev tools: `colcon`, `python3`, `git` available
-- System: non-root user, timezone, locale, writable work directory
+<details>
+<summary>Click to expand test details</summary>
+
+#### ROS environment (8)
+
+| Test | Description |
+|------|-------------|
+| `ROS_DISTRO` | Value is `humble` |
+| `setup.bash` | File exists |
+| `setup.bash` | Can be sourced |
+| `ros2` | CLI available after sourcing ROS |
+| `ros2 --help` | Functional |
+| `colcon` | Available |
+| `colcon --help` | Functional |
+
+#### GUI tools (3)
+
+| Test | Description |
+|------|-------------|
+| `rviz2` | Available after sourcing ROS (desktop-full) |
+| `rqt` | Available after sourcing ROS |
+| `gazebo` | Available |
+
+#### Base tools (11)
+
+| Test | Description |
+|------|-------------|
+| `python3` | Available |
+| `pip3` | Available |
+| `git` | Available |
+| `vim` | Available |
+| `curl` | Available |
+| `wget` | Available |
+| `tmux` | Available |
+| `tree` | Available |
+| `htop` | Available |
+| `sudo` | Available |
+| `sudo` | Passwordless works |
+
+#### System (11)
+
+| Test | Description |
+|------|-------------|
+| User | Not root |
+| `HOME` | Set and exists |
+| Timezone | `Asia/Taipei` |
+| `LANG` | `en_US.UTF-8` |
+| `LC_ALL` | `en_US.UTF-8` |
+| `NVIDIA_VISIBLE_DEVICES` | `all` |
+| `NVIDIA_DRIVER_CAPABILITIES` | `all` |
+| `entrypoint.sh` | Exists and executable |
+| Work directory | Exists |
+| Work directory | Writable |
+| `bash-completion` | Installed |
+
+</details>
 
 ## Directory Structure
 
