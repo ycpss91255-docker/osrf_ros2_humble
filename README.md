@@ -123,8 +123,8 @@ Scans the repo directory path to derive the image name:
 
 | Priority | Rule | Example Path | Result |
 |:--------:|------|-------------|--------|
-| 1 | Scan path (right→left) for `*_ws` → use prefix | `/home/user/ros2_humble_ws/docker_osrf_ros2_humble` | `ros2_humble` |
-| 2 | Last directory matches `docker_*` → strip prefix | `/home/user/docker_osrf_ros2_humble` | `osrf_ros2_humble` |
+| 1 | Last directory matches `docker_*` → strip prefix | `/home/user/docker_osrf_ros2_humble` | `osrf_ros2_humble` |
+| 2 | Scan path (right→left) for `*_ws` → use prefix | `/home/user/ros2_humble_ws/docker_osrf_ros2_humble` | `ros2_humble` |
 | 3 | Read `IMAGE_NAME` from `.env.example` | — | value in `.env.example` |
 | 4 | Fallback | — | `unknown` |
 
