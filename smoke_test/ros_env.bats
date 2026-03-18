@@ -47,7 +47,7 @@ setup() {
 }
 
 @test "gazebo command is available" {
-    run bash -c "which gz || which gazebo"
+    run bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && (which gz || which gazebo || which ign)"
     assert_success
 }
 
