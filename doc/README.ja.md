@@ -1,6 +1,6 @@
 # OSRF ROS 2 Humble Docker Environment
 
-**[English](README.md)** | **[繁體中文](README.zh-TW.md)** | **[简体中文](README.zh-CN.md)** | **[日本語](README.ja.md)**
+**[English](../README.md)** | **[繁體中文](README.zh-TW.md)** | **[简体中文](README.zh-CN.md)** | **[日本語](README.ja.md)**
 
 > **TL;DR** — ワンコマンドで `osrf/ros` desktop-full イメージベースの ROS 2 Humble コンテナ化開発環境をビルド（x86_64 のみ対応）。UID/GID を自動検出し、X11 GUI 転送に対応、マルチステージビルドで smoke test 検証を実施。
 >
