@@ -109,6 +109,8 @@ RUN apt-get update && \
         python3-setuptools \
         # ROS 2 auto complete
         bash-completion \
+        # GPU/OpenGL (Intel + software fallback)
+        libgl1-mesa-dri \
         python3-colcon-argcomplete \
         ros-${ROS_DISTRO}-ros2cli \
         && \
