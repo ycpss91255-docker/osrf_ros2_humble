@@ -18,7 +18,7 @@
 - [Subtree としての利用](#subtree-としての利用)
 - [設定](#設定)
 - [アーキテクチャ](#アーキテクチャ)
-- [smoke test](#smoke test)
+- [Smoke Tests](#smoke-tests)
 - [ディレクトリ構成](#ディレクトリ構成)
 - [docker\_template の更新](#template-の更新)
 
@@ -272,87 +272,9 @@ graph TD
 | `runtime-base` | `sys` | 最小化 runtime ベース、dev tools なし |
 | `runtime` | `runtime-base` | アプリに必要な ROS 2 packages を追加 |
 
-## smoke test
+## Smoke Tests
 
-`test/smoke/` に配置。`docker build --target test` 時に自動実行、全 **49** 項目。
-
-<details>
-<summary>クリックしてテスト詳細を表示</summary>
-
-#### ROS 環境 (8)
-
-| テスト項目 | 説明 |
-|----------|------|
-| `ROS_DISTRO` | 値が `humble` |
-| `setup.bash` | ファイルが存在 |
-| `setup.bash` | source 可能 |
-| `ros2` | ROS を source 後に CLI 利用可能 |
-| `ros2 --help` | 正常に動作 |
-| `colcon` | 利用可能 |
-| `colcon --help` | 正常に動作 |
-
-#### GUI ツール (3)
-
-| テスト項目 | 説明 |
-|----------|------|
-| `rviz2` | ROS を source 後に利用可能（desktop-full） |
-| `rqt` | ROS を source 後に利用可能 |
-| `gazebo` | 利用可能 |
-
-#### 基本ツール (11)
-
-| テスト項目 | 説明 |
-|----------|------|
-| `python3` | 利用可能 |
-| `pip3` | 利用可能 |
-| `git` | 利用可能 |
-| `vim` | 利用可能 |
-| `curl` | 利用可能 |
-| `wget` | 利用可能 |
-| `tmux` | 利用可能 |
-| `tree` | 利用可能 |
-| `htop` | 利用可能 |
-| `sudo` | 利用可能 |
-| `sudo` | パスワードなしで実行可能 |
-
-#### システム (11)
-
-| テスト項目 | 説明 |
-|----------|------|
-| ユーザー | root 以外 |
-| `HOME` | 設定済みかつ存在 |
-| タイムゾーン | `Asia/Taipei` |
-| `LANG` | `en_US.UTF-8` |
-| `LC_ALL` | `en_US.UTF-8` |
-| `NVIDIA_VISIBLE_DEVICES` | `all` |
-| `NVIDIA_DRIVER_CAPABILITIES` | `all` |
-| `entrypoint.sh` | 存在かつ実行可能 |
-| work ディレクトリ | 存在 |
-| work ディレクトリ | 書き込み可能 |
-| `bash-completion` | インストール済み |
-
-#### スクリプト help (16)
-
-| テスト項目 | 説明 |
-|----------|------|
-| `build.sh -h` | 終了コード 0 |
-| `build.sh --help` | 終了コード 0 |
-| `build.sh -h` | usage を表示 |
-| `run.sh -h` | 終了コード 0 |
-| `run.sh --help` | 終了コード 0 |
-| `run.sh -h` | usage を表示 |
-| `exec.sh -h` | 終了コード 0 |
-| `exec.sh --help` | 終了コード 0 |
-| `exec.sh -h` | usage を表示 |
-| `stop.sh -h` | 終了コード 0 |
-| `stop.sh --help` | 終了コード 0 |
-| `stop.sh -h` | usage を表示 |
-| `build.sh -h` | `LANG=zh_TW.UTF-8` で zh を検出 |
-| `build.sh -h` | `LANG=ja_JP.UTF-8` で ja を検出 |
-| `build.sh -h` | `LANG=en_US.UTF-8` でデフォルト en |
-| `build.sh -h` | `SETUP_LANG` が `LANG` を上書き |
-
-</details>
+詳細は [TEST.md](../test/TEST.md) を参照。
 
 ## ディレクトリ構成
 
